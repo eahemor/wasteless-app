@@ -1,0 +1,97 @@
+
+
+```mermaid
+graph TB
+    A[Student Has Waste Item] --> B{Opens WasteLess App}
+    
+    B --> C[Daily Challenge Visible<br/>+5 bonus for recycling today]
+    C --> D{Identifies Waste Type}
+    
+    D --> D1[Take Photo]
+    D --> D2[Scan with AR]
+    D --> D3[Manual Selection]
+    
+    D1 --> E[AI Recognition:<br/>Plastic Bottle PET #1]
+    D2 --> E
+    D3 --> E
+    
+    E --> F[App Shows:<br/>♻️ Recycling Required<br/>10 points available]
+    
+    F --> G{Find Nearest Bin}
+    G --> H[GPS Map Shows:<br/>3 recycling bins nearby<br/>Closest: 50m away]
+    
+    H --> I[Start Navigation<br/>RC-42 Daniel Defoe Bldg]
+    I --> J[Walking directions:<br/>Continue straight 30m<br/>Turn right at stairs]
+    
+    J --> K[Arrive at Bin<br/>Status: 65% full ✅]
+    
+    K --> L[Scan QR Code<br/>on Bin]
+    L --> M{QR Verification}
+    
+    M -->|Success| N[Bin Confirmed:<br/>RC-42 Recycling<br/>Show disposal tips]
+    M -->|Failed| O[Wrong Bin Type<br/>Navigate to correct bin]
+    
+    N --> P[Take Disposal Photo<br/>Item + bin in frame]
+    P --> Q{Photo Verification}
+    
+    Q -->|Valid| R[✅ All Verifications Complete<br/>📸 Photo ✅ GPS ✅ QR Code]
+    Q -->|Invalid| S[Retake photo<br/>Better angle needed]
+    
+    R --> T[🎉 Success Animation<br/>+10 Points Earned<br/>Badge Progress Updated]
+    
+    T --> U[Impact Tracking<br/>Personal: +1 recycled item<br/>Campus: +12.5kg this month]
+    
+    U --> V{Check Daily Challenge}
+    V -->|Complete| W[🏆 Daily Challenge Complete<br/>+5 Bonus Points<br/>New badge unlocked!]
+    V -->|Incomplete| X[Progress: 1/3 items<br/>2 more for bonus]
+    
+    W --> Y[Share Achievement<br/>Optional social post]
+    X --> Y
+    
+    Y --> Z[Return to Home<br/>Updated stats visible<br/>Next challenge preview]
+
+    %% Error Handling Flows
+    O --> AA[Show directions to<br/>correct bin type]
+    AA --> J
+    
+    S --> AB[Photography tips<br/>Better lighting<br/>Include bin in frame]
+    AB --> P
+    
+    %% Support Features
+    D --> AC{Need Help?}
+    AC --> AD[📚 UK Disposal Guide<br/>International student tips]
+    AC --> AE[💬 Community Forum<br/>Ask other students]
+    AC --> AF[🎮 Practice Mode<br/>Learn without pressure]
+    
+    AD --> D
+    AE --> D
+    AF --> AG[Practice scenarios<br/>Build confidence<br/>Earn practice points]
+    AG --> D
+    
+    %% Alternative Scenarios
+    K -->|Bin Full| AH[Bin Status: Full 🔴<br/>Find alternative]
+    AH --> AI[Show next nearest<br/>recycling bin]
+    AI --> J
+    
+    %% Gamification Elements
+    T --> AJ{Level Progress Check}
+    AJ -->|Level Up| AK[🎉 LEVEL UP!<br/>Reached Level 3<br/>+100 Bonus Points]
+    AJ -->|Continue| AL[Progress bar update<br/>XP: 450/500 to Level 3]
+    
+    AK --> Y
+    AL --> Y
+
+    %% Style the diagram
+    classDef startEnd fill:#4CAF50,stroke:#45a049,stroke-width:3px,color:#fff
+    classDef process fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
+    classDef decision fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    classDef success fill:#4CAF50,stroke:#45a049,stroke-width:2px,color:#fff
+    classDef error fill:#f44336,stroke:#d32f2f,stroke-width:2px,color:#fff
+    classDef gamification fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    
+    class A,Z startEnd
+    class B,C,E,F,H,I,J,K,L,N,P,R,T,U,Y,AA,AB,AD,AE,AF,AG,AI process
+    class D,G,M,Q,V,AC,AJ decision
+    class W,AK success
+    class O,S,AH error
+    class T,W,AK,AL gamification

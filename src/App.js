@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   GraduationCap, Globe, Recycle, Users, Home, BarChart3,
-  Trophy, User, Plus, Target, LogOut, CheckCircle, Award, TrendingUp, BookOpen
+  Trophy, User, Plus, Target, LogOut, CheckCircle, Award, TrendingUp, BookOpen,
+  Crown 
 } from 'lucide-react';
 
 function App() {
@@ -29,43 +30,619 @@ function App() {
   );
 }
 
-const LoginScreen = ({ onLogin }) => {
-  const [selectedUser, setSelectedUser] = useState('');
+// LOG IN AND VERIFICATION SECTION
 
-  const demoUsers = [
-    { 
-      id: '1', 
-      name: 'Karen Davis', 
-      university: 'University of Greenwich', 
-      points: 1250, 
-      badges: ['🌱', '♻️', '🏆'],
-      country: 'Italy'
-    },
-    { 
-      id: '2', 
-      name: 'Peace Joy', 
-      university: 'University of Greenwich', 
-      points: 890, 
-      badges: ['🌱', '♻️'],
-      country: 'Turkey'
-    },
-    { 
-      id: '3', 
-      name: 'Oasis Central', 
-      university: 'University of Greenwich', 
-      points: 2100, 
-      badges: ['🌱', '♻️', '🏆', '👑'],
-      country: 'UK'
-    },
+const LoginScreen = ({ onLogin }) => {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [pendingVerification, setPendingVerification] = useState(null);
+  const [showVerificationSuccess, setShowVerificationSuccess] = useState(false);
+  
+  // Store users in localStorage to persist between sessions
+  const [users, setUsers] = useState(() => {
+    const savedUsers = localStorage.getItem('wasteless-users');
+    if (savedUsers) {
+      return JSON.parse(savedUsers);
+    }
+    
+    // Default demo users (already verified)
+    return [
+      { 
+        id: '1', 
+        email: 'emma.chen@greenwich.ac.uk',
+        password: 'demo123',
+        name: 'Emma Chen', 
+        university: 'University of Greenwich', 
+        points: 1250, 
+        badges: ['🌱', '♻️', '🏆'],
+        country: 'China',
+        course: 'MSc Sustainable Engineering',
+        year: 'Year 2',
+        accommodation: 'Daniel Defoe Building',
+        isVerified: true,
+        registeredAt: new Date().toISOString()
+      },
+      { 
+        id: '2', 
+        email: 'ahmed.hassan@greenwich.ac.uk',
+        password: 'demo123',
+        name: 'Ahmed Hassan', 
+        university: 'University of Greenwich', 
+        points: 890, 
+        badges: ['🌱', '♻️'],
+        country: 'Egypt',
+        course: 'BSc Business Management',
+        year: 'Year 3',
+        accommodation: 'Blackheath Halls',
+        isVerified: true,
+        registeredAt: new Date().toISOString()
+      }
+    ];
+  });
+
+  // Pending verification users (not yet verified)
+  const [pendingUsers, setPendingUsers] = useState(() => {
+    const savedPending = localStorage.getItem('wasteless-pending-users');
+    return savedPending ? JSON.parse(savedPending) : [];
+  });
+
+  // Login form state
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
+
+  // Registration form state
+  const [registerData, setRegisterData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    country: '',
+    course: '',
+    year: '',
+    accommodation: '',
+    isInternational: false,
+    agreeTerms: false
+  });
+
+  // Available options for dropdowns
+  const courses = [
+    'MSc Business Analytics',
+    'BSc Business Management', 
+    'MSc Computer Science',
+    'BSc Environmental Science',
+    'MSc Data Analytics',
+    'BSc International Business',
+    'MSc Project Management',
+    'BSc Data Science',
+    'MSc Marketing Staretegy',
+    'BSc Architecture'
   ];
 
-  const handleLogin = () => {
-    const user = demoUsers.find(u => u.id === selectedUser);
+  const accommodations = [
+    'Daniel Defoe Building',
+    'Blackheath Halls',
+    'Greenwich Campus Accommodation',
+    'Avery Hill Accommodation',
+    'Private Accommodation',
+    'Living at Home',
+    'Other University Accommodation'
+  ];
+
+  const academicYears = [
+    'Year 1',
+    'Year 2', 
+    'Year 3',
+    'Year 4',
+    'Masters Year 1',
+    'Masters Year 2',
+    'PhD'
+  ];
+
+  // Save users to localStorage
+  const saveUsers = (newUsers) => {
+    setUsers(newUsers);
+    localStorage.setItem('wasteless-users', JSON.stringify(newUsers));
+  };
+
+  // Save pending users to localStorage
+  const savePendingUsers = (newPendingUsers) => {
+    setPendingUsers(newPendingUsers);
+    localStorage.setItem('wasteless-pending-users', JSON.stringify(newPendingUsers));
+  };
+
+  // Handle login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    // Check if user exists and is verified
+    const user = users.find(u => 
+      u.email.toLowerCase() === loginData.email.toLowerCase() && 
+      u.password === loginData.password &&
+      u.isVerified
+    );
+    
+    // Check if user is pending verification
+    const pendingUser = pendingUsers.find(u => 
+      u.email.toLowerCase() === loginData.email.toLowerCase()
+    );
+    
     if (user) {
       onLogin(user);
+    } else if (pendingUser) {
+      alert(`Your account is not yet verified. Please check your email (${pendingUser.email}) for the verification link, or use the verification button to complete setup.`);
+      setPendingVerification(pendingUser);
+    } else {
+      alert(`Login failed. Please check your credentials or register a new account.\n\nDemo accounts:\n- emma.chen@greenwich.ac.uk\n- ahmed.hassan@greenwich.ac.uk\nPassword: demo123`);
     }
   };
 
+  // Handle registration
+  const handleRegistration = (e) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!registerData.email.endsWith('@greenwich.ac.uk')) {
+      alert('Please use your University of Greenwich email address (@greenwich.ac.uk)');
+      return;
+    }
+    
+    if (registerData.password !== registerData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    
+    if (!registerData.agreeTerms) {
+      alert('Please agree to the Terms and Conditions');
+      return;
+    }
+
+    // Check if email already exists (verified or pending)
+    const existingUser = users.find(u => u.email.toLowerCase() === registerData.email.toLowerCase());
+    const existingPending = pendingUsers.find(u => u.email.toLowerCase() === registerData.email.toLowerCase());
+    
+    if (existingUser) {
+      alert('An account with this email already exists and is verified. Please login instead.');
+      return;
+    }
+    
+    if (existingPending) {
+      alert('An account with this email is pending verification. Please check your email or use the verification link.');
+      setPendingVerification(existingPending);
+      return;
+    }
+
+    // Create new pending user
+    const newPendingUser = {
+      id: Date.now().toString(),
+      email: registerData.email,
+      password: registerData.password,
+      name: `${registerData.firstName} ${registerData.lastName}`,
+      university: 'University of Greenwich',
+      points: 0,
+      badges: [],
+      country: registerData.country,
+      course: registerData.course,
+      year: registerData.year,
+      accommodation: registerData.accommodation,
+      isInternational: registerData.isInternational,
+      isVerified: false,
+      registeredAt: new Date().toISOString(),
+      verificationToken: Math.random().toString(36).substring(2, 15)
+    };
+
+    // Add to pending users
+    const updatedPendingUsers = [...pendingUsers, newPendingUser];
+    savePendingUsers(updatedPendingUsers);
+    
+    // Show verification screen
+    setPendingVerification(newPendingUser);
+  };
+
+  // Handle email verification
+  const handleEmailVerification = () => {
+    if (!pendingVerification) return;
+    
+    // Move user from pending to verified
+    const verifiedUser = {
+      ...pendingVerification,
+      isVerified: true,
+      verifiedAt: new Date().toISOString()
+    };
+    
+    // Add to verified users
+    const updatedUsers = [...users, verifiedUser];
+    saveUsers(updatedUsers);
+    
+    // Remove from pending users
+    const updatedPendingUsers = pendingUsers.filter(u => u.id !== pendingVerification.id);
+    savePendingUsers(updatedPendingUsers);
+    
+    // Show success message
+    setShowVerificationSuccess(true);
+    
+    // Auto-login after 2 seconds
+    setTimeout(() => {
+      setShowVerificationSuccess(false);
+      setPendingVerification(null);
+      onLogin(verifiedUser);
+    }, 2000);
+  };
+
+  // Email verification pending screen
+  if (pendingVerification) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+          <div className="text-center mb-8">
+            <div className="bg-yellow-500 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800">Verify Your Email</h1>
+            <p className="text-gray-600 mt-2">Check your university email</p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <div className="flex items-start space-x-3">
+                <div className="text-2xl">📧</div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-blue-800 mb-2">Verification Email Sent!</h3>
+                  <p className="text-sm text-blue-700 mb-3">
+                    We've sent a verification link to:
+                  </p>
+                  <div className="bg-white rounded p-2 border">
+                    <code className="text-sm font-mono text-blue-600">{pendingVerification.email}</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+              <h4 className="font-semibold text-yellow-800 mb-2">📋 Next Steps:</h4>
+              <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
+                <li>Check your university email inbox</li>
+                <li>Look for email from "WasteLess - University of Greenwich"</li>
+                <li>Click the "Verify Account" button in the email</li>
+                <li>Return here to complete setup</li>
+              </ol>
+            </div>
+
+            <div className="border-t pt-4">
+              <p className="text-sm text-gray-600 text-center mb-4">
+                For demo purposes, click below to simulate email verification:
+              </p>
+              
+              <button
+                onClick={handleEmailVerification}
+                className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center justify-center space-x-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>✅ Simulate Email Verification</span>
+              </button>
+            </div>
+
+            <div className="text-center">
+              <button
+                onClick={() => setPendingVerification(null)}
+                className="text-gray-500 hover:text-gray-700 text-sm"
+              >
+                ← Back to login
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-xs text-gray-600 text-center">
+              <strong>Security Note:</strong> Email verification ensures only genuine University of Greenwich students can access the WasteLess platform.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Verification success screen
+  if (showVerificationSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+          <div className="text-center">
+            <div className="bg-green-500 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome to WasteLess App! 🎉</h1>
+            <p className="text-gray-600 mb-4">Your account has been verified successfully</p>
+            
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200 mb-4">
+              <p className="text-green-700 text-sm">
+                <strong>{pendingVerification?.name}</strong><br/>
+                Your University of Greenwich account is now active!
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-center space-x-2 text-green-600">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-600"></div>
+              <span className="text-sm">Logging you in...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Rest of the login system (login screen, registration screen, main screen)
+  // ... (same as before, but I'll include the key screens)
+
+  if (isLoggingIn) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+          <div className="text-center mb-8">
+            <div className="bg-primary rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Recycle className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800">WasteLess App</h1>
+            <p className="text-gray-600 mt-2">"Turning Trash Into Treasure"</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                University Email
+              </label>
+              <input
+                type="email"
+                value={loginData.email}
+                onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                placeholder="your.name@greenwich.ac.uk"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={loginData.password}
+                onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                placeholder="Enter your password"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all"
+            >
+              Login to WasteLess
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => setIsLoggingIn(false)}
+              className="text-primary hover:underline text-sm"
+            >
+              ← Back to options
+            </button>
+          </div>
+
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+            <p className="text-xs text-gray-600 text-center">
+              <strong>Demo Accounts:</strong><br/>
+              emma.chen@greenwich.ac.uk<br/>
+              ahmed.hassan@greenwich.ac.uk<br/>
+              Password: demo123
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isRegistering) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 max-h-screen overflow-y-auto">
+          <div className="text-center mb-6">
+            <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <Recycle className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800">Join WasteLess</h1>
+            <p className="text-gray-600 text-sm">University of Greenwich Students</p>
+          </div>
+
+          <form onSubmit={handleRegistration} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input
+                  type="text"
+                  value={registerData.firstName}
+                  onChange={(e) => setRegisterData({...registerData, firstName: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  value={registerData.lastName}
+                  onChange={(e) => setRegisterData({...registerData, lastName: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">University Email</label>
+              <input
+                type="email"
+                value={registerData.email}
+                onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                placeholder="your.name@greenwich.ac.uk"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                required
+              />
+              {registerData.email && !registerData.email.endsWith('@greenwich.ac.uk') && (
+                <p className="text-red-500 text-xs mt-1">Must be a Greenwich university email</p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  value={registerData.password}
+                  onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm</label>
+                <input
+                  type="password"
+                  value={registerData.confirmPassword}
+                  onChange={(e) => setRegisterData({...registerData, confirmPassword: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
+              <select
+                value={registerData.course}
+                onChange={(e) => setRegisterData({...registerData, course: e.target.value})}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                required
+              >
+                <option value="">Select your course</option>
+                {courses.map(course => (
+                  <option key={course} value={course}>{course}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Academic Year</label>
+                <select
+                  value={registerData.year}
+                  onChange={(e) => setRegisterData({...registerData, year: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                >
+                  <option value="">Select year</option>
+                  {academicYears.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                <input
+                  type="text"
+                  value={registerData.country}
+                  onChange={(e) => setRegisterData({...registerData, country: e.target.value})}
+                  placeholder="e.g. United Kingdom"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Accommodation</label>
+              <select
+                value={registerData.accommodation}
+                onChange={(e) => setRegisterData({...registerData, accommodation: e.target.value})}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                required
+              >
+                <option value="">Select accommodation</option>
+                {accommodations.map(acc => (
+                  <option key={acc} value={acc}>{acc}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="international"
+                checked={registerData.isInternational}
+                onChange={(e) => setRegisterData({...registerData, isInternational: e.target.checked})}
+                className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
+              />
+              <label htmlFor="international" className="text-sm text-gray-700">
+                I am an international student
+              </label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={registerData.agreeTerms}
+                onChange={(e) => setRegisterData({...registerData, agreeTerms: e.target.checked})}
+                className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
+                required
+              />
+              <label htmlFor="terms" className="text-xs text-gray-700">
+                I agree to the Terms and Conditions and Privacy Policy
+              </label>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <div className="flex items-start space-x-2">
+                <div className="text-blue-500 mt-0.5">📧</div>
+                <p className="text-xs text-blue-700">
+                  <strong>Email Verification Required:</strong> After registration, check your university email for a verification link to activate your account.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all"
+            >
+              Create Account & Send Verification
+            </button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => setIsRegistering(false)}
+              className="text-primary hover:underline text-sm"
+            >
+              ← Back to options
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Main login/register selection screen
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
@@ -92,37 +669,27 @@ const LoginScreen = ({ onLogin }) => {
           <span className="text-yellow-800 text-sm">85% willing to change habits</span>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Demo User Profile (For IC-ETSI 2025 Conference)
-          </label>
-          <select 
-            value={selectedUser}
-            onChange={(e) => setSelectedUser(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+        <div className="space-y-3">
+          <button
+            onClick={() => setIsLoggingIn(true)}
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all"
           >
-            <option value="">Select a demo profile...</option>
-            {demoUsers.map(user => (
-              <option key={user.id} value={user.id}>
-                {user.name} ({user.country}) - {user.points} pts {user.badges.join(' ')}
-              </option>
-            ))}
-          </select>
-        </div>
+            Login with University Account
+          </button>
 
-        <button
-          onClick={handleLogin}
-          disabled={!selectedUser}
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
-        >
-          Enter WasteLess App
-        </button>
+          <button
+            onClick={() => setIsRegistering(true)}
+            className="w-full bg-white text-primary border-2 border-primary py-3 rounded-lg font-semibold hover:bg-green-50 transition-all"
+          >
+            Register New Account
+          </button>
+        </div>
 
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-xs text-gray-600 text-center">
-            <strong>Research Impact:</strong> Based on 23 international student interviews
+            <strong>Secure Registration:</strong> Email verification required for all new accounts
             <br />
-            <strong>Conference:</strong> IC-ETSI 2025 - June 16th | Ebenezer Ahemor
+            <strong>Research Impact:</strong> Based on 23 international student interviews
           </p>
         </div>
       </div>
@@ -210,12 +777,299 @@ const Dashboard = ({ user, onLogout }) => {
   );
 };
 
-const HomeContent = ({ user }) => {
+
+
+const VerificationSteps = ({ activeStep = 0 }) => {
+  const steps = [
+    { icon: '📸', label: 'Photo', id: 0 },
+    { icon: '📍', label: 'Location', id: 1 },
+    { icon: '🏷️', label: 'QR Code', id: 2 }
+  ];
+
   return (
-    <div className="p-4 space-y-6">
-      <div className="bg-gradient-to-r from-primary to-green-600 rounded-xl p-6 text-white shadow-lg">
-        <h2 className="text-xl font-bold mb-2">Your Impact This Month</h2>
-        <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-3 gap-3 my-4">
+      {steps.map((step) => (
+        <div 
+          key={step.id}
+          className={`text-center p-3 rounded-lg border-2 transition-all ${
+            step.id <= activeStep 
+              ? 'bg-green-50 border-green-500' 
+              : 'bg-gray-50 border-gray-300'
+          }`}
+        >
+          <div className="text-2xl mb-2">{step.icon}</div>
+          <div className="text-sm font-medium">{step.label}</div>
+          {step.id <= activeStep && (
+            <div className="text-xs text-green-600 mt-1">✓</div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+const HomeContent = ({ user }) => {
+  const defaultUser = {
+    name: 'Demo User',
+    points: 1250,
+    badges: ['🌱', '♻️', '🏆']
+  };
+  
+  const currentUser = user || defaultUser;
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const [showBadgeUnlock, setShowBadgeUnlock] = useState(false);
+  const [verificationStep, setVerificationStep] = useState(0);
+  const [currentLevel] = useState(Math.floor(currentUser.points / 500) + 1);
+  const [streakCount] = useState(15);
+  const [isOnFire] = useState(streakCount >= 7);
+
+  const calculateBadgeProgress = (badge) => {
+  const rankBasedBadges = ['leader', 'top3', 'risingstar']; 
+  
+  if (rankBasedBadges.includes(badge.id)) {
+    // For rank-based badges: lower rank number = better position
+    if (badge.progress <= badge.target) {
+      return 100; // Already achieved target
+    }
+    // Calculate progress as percentage toward target rank
+    const maxPossibleRank = 8; // Assuming 8 total participants
+    const progressPercent = Math.max(0, ((maxPossibleRank - badge.progress) / (maxPossibleRank - badge.target)) * 100);
+    return Math.min(100, progressPercent);
+  } else {
+    // For count-based badges: standard calculation
+    return Math.min(100, (badge.progress / badge.target) * 100);
+  }
+};
+
+  const badgeSystem = {
+    unlocked: [
+      { 
+        id: 'starter', 
+        emoji: '🌱', 
+        name: 'Eco Starter', 
+        description: 'Logged first waste item',
+        rarity: 'common',
+        pointsEarned: 50,
+        unlockedDate: '2 weeks ago'
+      },
+      { 
+        id: 'recycler', 
+        emoji: '♻️', 
+        name: 'Recycling Hero', 
+        description: 'Recycled 10 items correctly',
+        rarity: 'common',
+        pointsEarned: 100,
+        unlockedDate: '1 week ago'
+      },
+      { 
+        id: 'champion', 
+        emoji: '🏆', 
+        name: 'Waste Champion', 
+        description: 'Reached 1000 points',
+        rarity: 'rare',
+        pointsEarned: 200,
+        unlockedDate: '3 days ago'
+      }
+    ],
+    nextToUnlock: [
+  { 
+    id: 'speedster', 
+    emoji: '⚡', 
+    name: 'Speed Logger', 
+    description: 'Log 5 items in one day',
+    progress: 3,
+    target: 5,
+    rarity: 'uncommon',
+    reward: 150
+  },
+  { 
+    id: 'top3', 
+    emoji: '🥉', 
+    name: 'Top 3 Finisher', 
+    description: 'Reach top 3 on leaderboard',
+    progress: 5,  // Currently rank #5
+    target: 3,    // Need to reach rank #3
+    rarity: 'rare',
+    reward: 300
+  },
+  { 
+    id: 'risingstar', 
+    emoji: '⭐', 
+    name: 'Rising Star', 
+    description: 'Climb 5 ranks in one week',
+    progress: 7,  // Started at rank #7
+    target: 2,    // Need to reach rank #2 (climbed 5 ranks)
+    rarity: 'epic',
+    reward: 400
+  },
+  { 
+    id: 'warrior', 
+    emoji: '🌍', 
+    name: 'Eco Warrior', 
+    description: 'Maintain 30-day streak',
+    progress: 15,
+    target: 30,
+    rarity: 'epic',
+    reward: 500
+  },
+  { 
+    id: 'leader', 
+    emoji: '👑', 
+    name: 'Leaderboard King', 
+    description: 'Reach #1 on leaderboard',
+    progress: 2,
+    target: 1,
+    rarity: 'legendary',
+    reward: 1000
+  }
+],
+  };
+
+  // Level progression system
+  const levelProgress = {
+    current: currentLevel,
+    pointsInLevel: currentUser.points % 500,
+    pointsToNext: 500 - (currentUser.points % 500),
+    nextLevelReward: currentLevel < 5 ? 100 : currentLevel < 10 ? 200 : 500
+  };
+
+  // Simulate level up for demo
+  const triggerLevelUp = () => {
+    setShowLevelUp(true);
+    setTimeout(() => setShowLevelUp(false), 3000);
+  };
+
+  // Simulate badge unlock for demo
+  const triggerBadgeUnlock = () => {
+    setShowBadgeUnlock(true);
+    setTimeout(() => setShowBadgeUnlock(false), 3000);
+  };
+
+
+const nextVerificationStep = () => {
+  if (verificationStep < 2) {
+    setVerificationStep(verificationStep + 1);
+  } else {
+    setVerificationStep(0);
+    setShowBadgeUnlock(true);
+  }
+};
+
+const resetVerification = () => {
+  setVerificationStep(0);
+};
+
+const getVerificationStepText = () => {
+  switch(verificationStep) {
+    case 0: return 'Take Disposal Photo';
+    case 1: return 'Verify GPS Location'; 
+    case 2: return 'Scan Bin QR Code';
+    default: return 'Photo Verification';
+  }
+};
+
+const getVerificationDescription = () => {
+  switch(verificationStep) {
+    case 0: return 'Position your waste item above the bin and take a clear photo.';
+    case 1: return 'GPS confirms you are within 5 meters of the bin.';
+    case 2: return 'Scan the QR code to verify correct bin type.';
+    default: return 'Start verification';
+  }
+};
+
+const getRarityColor = (rarity) => {
+  switch(rarity) {
+    case 'common': return 'from-gray-300 to-gray-400';
+    case 'uncommon': return 'from-green-300 to-green-500';
+    case 'rare': return 'from-blue-300 to-blue-500';
+    case 'epic': return 'from-purple-300 to-purple-500';
+    case 'legendary': return 'from-yellow-300 to-orange-500';
+    default: return 'from-gray-300 to-gray-400';
+  }
+};
+
+  // Daily challenges
+  const dailyChallenges = [
+    { 
+      id: 1, 
+      title: 'Recycling Champion', 
+      description: 'Log 3 recycling items', 
+      progress: 2, 
+      target: 3, 
+      reward: 75,
+      icon: '♻️',
+      timeLeft: '8h 32m'
+    },
+    
+    { 
+      id: 3, 
+      title: 'Learning Enthusiast', 
+      description: 'Complete 1 education module', 
+      progress: 0, 
+      target: 1, 
+      reward: 100,
+      icon: '📚',
+      timeLeft: '8h 32m'
+    }
+  ];
+
+  return (
+    <div className="p-4 space-y-6 relative">
+      {/* Level Up Animation */}
+      {showLevelUp && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl animate-bounce">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-3xl font-bold text-yellow-600 mb-2">LEVEL UP!</h2>
+            <p className="text-xl mb-4">You reached Level {currentLevel + 1}!</p>
+            <div className="bg-yellow-100 rounded-lg p-4">
+              <p className="text-yellow-800">Bonus: +{levelProgress.nextLevelReward} points!</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Badge Unlock Animation */}
+      {showBadgeUnlock && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl animate-pulse">
+            <div className="text-6xl mb-4">⚡</div>
+            <h2 className="text-2xl font-bold text-purple-600 mb-2">NEW BADGE UNLOCKED!</h2>
+            <p className="text-lg mb-4">Speed Logger</p>
+            <div className="bg-purple-100 rounded-lg p-4">
+              <p className="text-purple-800">+150 bonus points earned!</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Impact Dashboard */}
+      <div className="bg-gradient-to-br from-green-500 via-blue-500 to-purple-500 rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div className="absolute top-2 right-2">
+          {isOnFire && (
+            <div className="flex items-center space-x-1 bg-orange-500 rounded-full px-2 py-1">
+              <span className="text-xs">🔥</span>
+              <span className="text-xs font-bold">ON FIRE!</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-xl font-bold mb-1">Your Impact This Month</h2>
+            <div className="flex items-center space-x-2">
+              <Crown className="w-5 h-5 text-yellow-300" />
+              <span className="text-sm">Level {currentLevel} Eco Warrior</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold">{streakCount}</div>
+            <div className="text-xs">day streak</div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <div className="text-2xl font-bold">12.5kg</div>
             <div className="text-green-100">Waste Diverted</div>
@@ -225,103 +1079,222 @@ const HomeContent = ({ user }) => {
             <div className="text-green-100">Recycling Rate</div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h3 className="font-semibold mb-4">Quick Log Waste</h3>
-        <div className="grid grid-cols-2 gap-3">
-          <button className="p-4 bg-blue-50 rounded-lg text-center hover:bg-blue-100 transition-colors">
-            <div className="text-2xl mb-2">♻️</div>
-            <div className="text-sm font-medium">Recycling</div>
-            <div className="text-xs text-gray-500">+10 pts</div>
-          </button>
-          <button className="p-4 bg-green-50 rounded-lg text-center hover:bg-green-100 transition-colors">
-            <div className="text-2xl mb-2">🥬</div>
-            <div className="text-sm font-medium">Compost</div>
-            <div className="text-xs text-gray-500">+15 pts</div>
-          </button>
-          <button className="p-4 bg-yellow-50 rounded-lg text-center hover:bg-yellow-100 transition-colors">
-            <div className="text-2xl mb-2">📱</div>
-            <div className="text-sm font-medium">E-Waste</div>
-            <div className="text-xs text-gray-500">+25 pts</div>
-          </button>
-          <button className="p-4 bg-purple-50 rounded-lg text-center hover:bg-purple-100 transition-colors">
-            <div className="text-2xl mb-2">👕</div>
-            <div className="text-sm font-medium">Textiles</div>
-            <div className="text-xs text-gray-500">+20 pts</div>
-          </button>
+        {/* Level Progress Bar */}
+        <div className="bg-white bg-opacity-20 rounded-lg p-3">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium">Level {currentLevel} Progress</span>
+            <span className="text-sm">{levelProgress.pointsInLevel}/500 XP</span>
+          </div>
+          <div className="bg-white bg-opacity-30 rounded-full h-3">
+            <div 
+              className="bg-yellow-400 h-3 rounded-full transition-all duration-1000"
+              style={{ width: `${(levelProgress.pointsInLevel / 500) * 100}%` }}
+            ></div>
+          </div>
+          <div className="text-xs mt-1 text-center">
+            {levelProgress.pointsToNext} XP to Level {currentLevel + 1} (+{levelProgress.nextLevelReward} bonus!)
+          </div>
         </div>
       </div>
 
+      {/* Daily Challenges */}
       <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h3 className="font-semibold mb-4 flex items-center">
-          <Award className="w-5 h-5 mr-2 text-yellow-500" />
-          Achievement Badges
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold flex items-center">
+            <Target className="w-5 h-5 mr-2 text-orange-500" />
+            Daily Challenges
+          </h3>
+          <div className="text-sm text-gray-500">Resets in 8h 32m</div>
+        </div>
         
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {user.badges.map((badge, index) => (
-            <div key={index} className="text-center p-3 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-              <div className="text-3xl mb-2">{badge}</div>
-              <div className="text-xs font-medium text-gray-700">Level {index + 1}</div>
-              <div className="text-xs text-gray-500">Earned</div>
+        <div className="space-y-3">
+          {dailyChallenges.map((challenge) => (
+            <div key={challenge.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-3">
+                  <div className="text-2xl">{challenge.icon}</div>
+                  <div>
+                    <h4 className="font-medium">{challenge.title}</h4>
+                    <p className="text-sm text-gray-600">{challenge.description}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-green-600">+{challenge.reward}</div>
+                  <div className="text-xs text-gray-500">points</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex-1 mr-4">
+                  <div className="bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-green-500 h-2 rounded-full transition-all duration-500"
+                      style={{ width: `${(challenge.progress / challenge.target) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+                <div className="text-sm font-medium">
+                  {challenge.progress}/{challenge.target}
+                </div>
+              </div>
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="border-t pt-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-3">🎯 Next Badges to Unlock</h4>
+      {/* Enhanced Badge System */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <h3 className="font-semibold mb-4 flex items-center">
+          <Award className="w-5 h-5 mr-2 text-yellow-500" />
+          Achievement Collection ({badgeSystem.unlocked.length}/12)
+        </h3>
+        
+        {/* Unlocked Badges */}
+        <div className="mb-6">
+          <h4 className="text-sm font-medium text-gray-700 mb-3">🏆 Unlocked Badges</h4>
           <div className="grid grid-cols-3 gap-3">
-            <div className="text-center p-3 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <div className="text-2xl mb-1 opacity-50">⚡</div>
-              <div className="text-xs text-gray-600">Speed Logger</div>
-              <div className="text-xs text-gray-500">5 quick logs</div>
-            </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <div className="text-2xl mb-1 opacity-50">🌍</div>
-              <div className="text-xs text-gray-600">Eco Warrior</div>
-              <div className="text-xs text-gray-500">30 day streak</div>
-            </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <div className="text-2xl mb-1 opacity-50">👥</div>
-              <div className="text-xs text-gray-600">Team Player</div>
-              <div className="text-xs text-gray-500">Join challenge</div>
-            </div>
+            {badgeSystem.unlocked.map((badge) => (
+              <div key={badge.id} className="text-center p-3 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg border border-yellow-200 relative">
+                <div className={`absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-r ${getRarityColor(badge.rarity)}`}></div>
+                <div className="text-3xl mb-2">{badge.emoji}</div>
+                <div className="text-xs font-medium text-gray-700">{badge.name}</div>
+                <div className="text-xs text-gray-500">{badge.unlockedDate}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-blue-800">Progress to Next Badge</span>
-            <span className="text-sm text-blue-600">⚡ Speed Logger</span>
+        {/* Next Badges to Unlock */}
+        <div className="border-t pt-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-3">🎯 Next Badges to Unlock</h4>
+          <div className="space-y-3">
+            {badgeSystem.nextToUnlock.map((badge) => (
+              <div key={badge.id} className="bg-gray-50 rounded-lg p-4 border-2 border-dashed border-gray-300">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-2xl opacity-50">{badge.emoji}</div>
+                    <div>
+                      <div className="font-medium text-gray-800">{badge.name}</div>
+                      <div className="text-sm text-gray-600">{badge.description}</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-purple-600">+{badge.reward}</div>
+                    <div className="text-xs text-gray-500">reward</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 mr-4">
+                    <div className="bg-gray-300 rounded-full h-2">
+                      <div 
+                        className="bg-purple-500 h-2 rounded-full transition-all duration-1000"
+                        style={{ width: `${calculateBadgeProgress(badge)}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium">
+                    {['top3', 'risingstar', 'leader'].includes(badge.id) 
+  ? `Rank ${badge.progress}` 
+  : `${badge.progress}/${badge.target}`
+}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="bg-blue-200 rounded-full h-2">
-            <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
-          </div>
-          <div className="text-xs text-blue-600 mt-1">3/5 quick logs completed</div>
         </div>
       </div>
 
-      <div className="bg-blue-50 rounded-xl p-6">
-        <h3 className="font-semibold mb-2 text-blue-800">📊 Research Impact</h3>
-        <div className="space-y-2 text-sm text-blue-700">
+      {/* Demo Buttons for Presentation */}
+      <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+        <h3 className="font-semibold mb-4 text-blue-800">🎮 Demo Gamification Features</h3>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={triggerLevelUp}
+            className="bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all transform hover:scale-105"
+          >
+            🎉 Trigger Level Up
+          </button>
+          <button
+            onClick={triggerBadgeUnlock}
+            className="bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition-all transform hover:scale-105"
+          >
+            ⚡ Unlock Badge
+          </button>
+        </div>
+        <p className="text-xs text-blue-600 mt-3 text-center">
+          Use these buttons during your demo to showcase animations!
+        </p>
+      </div>
+
+{/* Verification System Demo */}
+<div className="bg-white rounded-xl p-6 shadow-sm">
+  <h3 className="font-semibold mb-4 flex items-center">
+    🔒 Verification System Demo
+  </h3>
+  
+  <VerificationSteps activeStep={verificationStep} />
+  
+  <div className="bg-blue-50 rounded-lg p-4 mb-4">
+    <h4 className="font-medium text-blue-800 mb-2">Current Step: {getVerificationStepText()}</h4>
+    <p className="text-sm text-blue-700">
+      {getVerificationDescription()}
+    </p>
+  </div>
+  
+  <div className="grid grid-cols-2 gap-3">
+    <button
+      onClick={nextVerificationStep}
+      className="bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all transform hover:scale-105"
+    >
+      {verificationStep < 2 ? 'Next Step' : 'Complete Verification'}
+    </button>
+    <button
+      onClick={resetVerification}
+      className="bg-gray-500 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition-all transform hover:scale-105"
+    >
+      Reset Demo
+    </button>
+  </div>
+</div>
+
+
+
+      {/* Research Impact with Gamification Metrics */}
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200">
+        <h3 className="font-semibold mb-4 text-gray-800">📊 Gamification Research Impact</h3>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">+34%</div>
+            <div className="text-xs text-gray-600">Engagement increase</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">89%</div>
+            <div className="text-xs text-gray-600">Daily challenge completion</div>
+          </div>
+        </div>
+        <div className="space-y-2 text-sm text-gray-700">
           <div className="flex justify-between">
-            <span>Your improvement:</span>
-            <span className="font-bold">+22% vs baseline</span>
+            <span>Badge collection rate:</span>
+            <span className="font-bold text-purple-600">76% avg per user</span>
           </div>
           <div className="flex justify-between">
-            <span>Campus target:</span>
-            <span className="font-bold">20% improvement</span>
+            <span>Level progression impact:</span>
+            <span className="font-bold text-orange-600">+28% retention</span>
           </div>
           <div className="flex justify-between">
-            <span>Conference:</span>
-            <span className="font-bold">IC-ETSI 2025 ✨</span>
+            <span>Demo Presentation:</span>
+            <span className="font-bold text-blue-600">For University Of Greenwich ✨</span>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 const WasteLogger = ({ user }) => {
   const [selectedType, setSelectedType] = useState('');
@@ -494,8 +1467,8 @@ const Analytics = ({ user }) => {
             <span className="font-bold text-green-600">34%</span>
           </div>
           <div className="flex justify-between">
-            <span>Conference presentation:</span>
-            <span className="font-bold text-blue-600">IC-ETSI 2025</span>
+            <span>WastLess App Demo presentation:</span>
+            <span className="font-bold text-blue-600">For Greenwich University</span>
           </div>
         </div>
       </div>
@@ -1120,5 +2093,5 @@ const Education = ({ user }) => {
       </div>
     </div>
   );
-};
+}
 export default App;

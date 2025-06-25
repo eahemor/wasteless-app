@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WasteLess App - Enhanced Mockups & User Flows</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .navigation {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .nav-item {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .nav-item.active {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .nav-item:hover {
+            background: #e8f5e8;
+        }
+        
+        .nav-item.active:hover {
+            background: #45a049;
+        }
+        
+        .content {
+            padding: 30px;
+            min-height: 600px;
+        }
+        
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: #1a1a1a;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .flow-diagram {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .flow-step:hover {
+            transform: translateY(-2px);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .step-desc {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        
+        .mockup-header {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mockup-content {
+            padding: 20px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+        
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .feature-highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .qr-mockup {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            margin: 10px auto;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .map-mockup {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, #e8f5e8, #c8e6c9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .verification-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .verification-step {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .verification-step.active {
+            border-color: #4CAF50;
+            background: #e8f5e8;
+        }
+        
+        .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 WasteLess App</h1>
+            <p>Enhanced Gamification with Verification & Support Features</p>
+        </div>
+        
+        <div class="navigation">
+            <div class="nav-item active" onclick="showSection('user-flow')">📊 Complete User Flow</div>
+            <div class="nav-item" onclick="showSection('verification')">✅ Verification System</div>
+            <div class="nav-item" onclick="showSection('bin-locator')">📍 Bin Locator</div>
+            <div class="nav-item" onclick="showSection('qr-system')">🏷️ QR Code Integration</div>
+            <div class="nav-item" onclick="showSection('support-features')">🆘 Support Features</div>
+        </div>
+        
+        <div class="content">
+            <!-- User Flow Section -->
+            <div id="user-flow" class="section">
+                <h2>🔄 Complete User Flow Diagram</h2>
+                <p style="margin-bottom: 20px;">End-to-end process from waste disposal need to points earned</p>
+                
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Student Has Waste</div>
+                            <div class="step-desc">Student finishes lunch, has recyclable bottle and food waste</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Opens WasteLess App</div>
+                            <div class="step-desc">Quick access from home screen, sees daily challenges</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Identifies Waste Type</div>
+                            <div class="step-desc">Takes photo or uses AR scanner to identify waste categories</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Finds Nearest Bin</div>
+                            <div class="step-desc">GPS map shows closest recycling & compost bins with walking directions</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">Navigates to Bin</div>
+                            <div class="step-desc">Follows GPS directions, sees bin status (available/full)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <div class="step-title">Scans Bin QR Code</div>
+                            <div class="step-desc">Verifies correct bin type, triggers educational tips</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <div class="step-title">Confirms Bin Type</div>
+                            <div class="step-desc">App validates correct bin for waste type, shows disposal tips</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">8</div>
+                        <div class="step-content">
+                            <div class="step-title">Takes Disposal Photo</div>
+                            <div class="step-desc">Photos waste item being disposed for verification</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">9</div>
+                        <div class="step-content">
+                            <div class="step-title">Earns Points & Badges</div>
+                            <div class="step-desc">Receives 25 points (recycling + compost), unlocks achievements</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="step-number">10</div>
+                        <div class="step-content">
+                            <div class="step-title">Impact Tracking</div>
+                            <div class="step-desc">App updates personal & campus sustainability metrics</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-highlight">
+                    <h3>🎯 Total Process Time: 2-3 minutes</h3>
+                    <p>From waste identification to points earned - streamlined for student life!</p>
+                </div>
+            </div>
+            
+            <!-- Verification System Section -->
+            <div id="verification" class="section hidden">
+                <h2>✅ Triple Verification System Mockups</h2>
+                <p style="margin-bottom: 20px;">Ensuring genuine waste disposal through multi-layer verification</p>
+                
+                <div class="mockup-grid">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>📱 Photo Verification</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="text-align: center; margin-bottom: 20px;">Take Disposal Photo</h3>
+                                <div style="width: 100%; height: 150px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                                    📷 Camera View
+                                </div>
+                                <div class="verification-steps">
+                                    <div class="verification-step active">
+                                        <div class="icon">📸</div>
+                                        <div>Photo</div>
+                                    </div>
+                                    <div class="verification-step">
+                                        <div class="icon">📍</div>
+                                        <div>Location</div>
+                                    </div>
+                                    <div class="verification-step">
+                                        <div class="icon">🏷️</div>
+                                        <div>QR Code</div>
+                                    </div>
+                                </div>
+                                <p style="text-align: center; color: #666; font-size: 14px;">Position item above bin before disposal</p>
+                                <button class="btn" style="width: 100%; margin-top: 20px;">Capture Photo</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>📍 GPS Verification</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="text-align: center; margin-bottom: 20px;">Location Confirmed</h3>
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <span style="color: #4CAF50; margin-right: 10px;">✅</span>
+                                        <strong>At Recycling Bin #RC-42</strong>
+                                    </div>
+                                    <div style="font-size: 14px; color: #666;">
+                                        Daniel Defoe Building, Level 2<br>
+                                        Distance: <2m from bin
+                                    </div>
+                                </div>
+                                <div class="verification-steps">
+                                    <div class="verification-step active">
+                                        <div class="icon">📸</div>
+                                        <div>Photo</div>
+                                    </div>
+                                    <div class="verification-step active">
+                                        <div class="icon">📍</div>
+                                        <div>Location</div>
+                                    </div>
+                                    <div class="verification-step">
+                                        <div class="icon">🏷️</div>
+                                        <div>QR Code</div>
+                                    </div>
+                                </div>
+                                <p style="text-align: center; color: #4CAF50; font-weight: bold;">GPS Verification Complete!</p>
+                                <button class="btn" style="width: 100%; margin-top: 20px;">Continue to QR Scan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-highlight">
+                    <h3>🔒 Security Features</h3>
+                    <p><strong>Photo Analysis:</strong> AI detects waste type and disposal action</p>
+                    <p><strong>GPS Accuracy:</strong> Must be within 5m of registered bin location</p>
+                    <p><strong>Time Verification:</strong> All steps completed within reasonable timeframe</p>
+                </div>
+            </div>
+            
+            <!-- Bin Locator Section -->
+            <div id="bin-locator" class="section hidden">
+                <h2>📍 Smart Bin Locator System</h2>
+                <p style="margin-bottom: 20px;">Helping students find the right bins with GPS navigation and real-time status</p>
+                
+                <div class="mockup-grid">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>🗺️ Campus Map</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="margin-bottom: 15px;">Find Nearest Bins</h3>
+                                <div class="map-mockup">
+                                    📍 You are here<br>
+                                    ♻️ Recycling (50m)<br>
+                                    🥬 Compost (75m)<br>
+                                    🗑️ General (30m)
+                                </div>
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">Recommended Route:</h4>
+                                    <div style="font-size: 14px; color: #666;">
+                                        1. 🗑️ General Waste (30m, 1 min)<br>
+                                        2. ♻️ Recycling (20m more, 30 sec)<br>
+                                        3. 🥬 Compost (45m more, 1 min)
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn">Start Navigation</button>
+                                    <button class="btn btn-secondary">Filter Bins</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>🧭 Navigation</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="margin-bottom: 15px;">Walking to Recycling Bin</h3>
+                                <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-weight: bold;">RC-42 Recycling</div>
+                                            <div style="color: #666; font-size: 14px;">Daniel Defoe Building</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-weight: bold; color: #1976d2;">25m</div>
+                                            <div style="color: #666; font-size: 14px;">30 seconds</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <div style="display: flex; align-items: center;">
+                                        <span style="margin-right: 10px;">🟡</span>
+                                        <div>
+                                            <strong>Bin Status: 65% Full</strong><br>
+                                            <span style="font-size: 14px; color: #666;">Still accepting items</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin: 20px 0;">
+                                    <div style="font-size: 18px; margin-bottom: 10px;">🧭</div>
+                                    <div style="font-weight: bold;">Continue straight 20m</div>
+                                    <div style="color: #666; font-size: 14px;">Then turn right at staircase</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-highlight">
+                    <h3>🎯 Smart Features</h3>
+                    <p><strong>Optimal Routing:</strong> Plan route for multiple waste types</p>
+                    <p><strong>Real-time Status:</strong> See if bins are full before walking there</p>
+                    <p><strong>Indoor Navigation:</strong> Works inside buildings with detailed directions</p>
+                </div>
+            </div>
+            
+            <!-- QR System Section -->
+            <div id="qr-system" class="section hidden">
+                <h2>🏷️ QR Code Integration System</h2>
+                <p style="margin-bottom: 20px;">Every bin becomes a smart, educational checkpoint</p>
+                
+                <div class="mockup-grid">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>📱 QR Scanner</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="text-align: center; margin-bottom: 20px;">Scan Bin QR Code</h3>
+                                <div style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0; position: relative;">
+                                    <div style="width: 100px; height: 100px; border: 2px dashed #4CAF50; display: flex; align-items: center; justify-content: center;">
+                                        <div class="qr-mockup">QR</div>
+                                    </div>
+                                    <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 14px; color: #666;">Align QR code in frame</div>
+                                </div>
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <div style="text-align: center;">
+                                        <div style="font-weight: bold; color: #2e7d32;">Ready to Scan</div>
+                                        <div style="font-size: 14px; color: #666; margin-top: 5px;">Point camera at bin QR code</div>
+                                    </div>
+                                </div>
+                                <button class="btn" style="width: 100%;">Manual Entry</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>✅ Bin Verified</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="text-align: center; margin-bottom: 20px;">Recycling Bin RC-42</h3>
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <span style="color: #4CAF50; margin-right: 10px; font-size: 20px;">♻️</span>
+                                        <div>
+                                            <strong>Recycling Bin Confirmed</strong><br>
+                                            <span style="font-size: 14px; color: #666;">Daniel Defoe Building, Level 2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">💡 Quick Tips:</h4>
+                                    <ul style="font-size: 14px; color: #666; margin-left: 20px;">
+                                        <li>Remove caps from bottles</li>
+                                        <li>Rinse containers clean</li>
+                                        <li>No plastic bags please!</li>
+                                    </ul>
+                                </div>
+                                
+                                <div style="text-align: center; margin: 20px 0;">
+                                    <div style="font-size: 16px; color: #4CAF50; font-weight: bold;">Ready to dispose! 🎯</div>
+                                </div>
+                                
+                                <button class="btn" style="width: 100%;">Take Disposal Photo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                    <h3 style="margin-bottom: 15px;">🔗 QR Code Infrastructure</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 10px;">♻️</div>
+                            <strong>Recycling Bins</strong><br>
+                            <span style="color: #666; font-size: 14px;">RC-01 to RC-50</span>
+                        </div>
+                        <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 10px;">🥬</div>
+                            <strong>Compost Bins</strong><br>
+                            <span style="color: #666; font-size: 14px;">CM-01 to CM-25</span>
+                        </div>
+                        <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 10px;">🗑️</div>
+                            <strong>General Bins</strong><br>
+                            <span style="color: #666; font-size: 14px;">GW-01 to GW-75</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Support Features Section -->
+            <div id="support-features" class="section hidden">
+                <h2>🆘 Student Support Features</h2>
+                <p style="margin-bottom: 20px;">Addressing the need for guidance and support in waste disposal</p>
+                
+                <div class="mockup-grid">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>📚 Learn & Get Help</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="margin-bottom: 20px;">I'm Not Sure How to Dispose This</h3>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">📸 Scan & Learn</h4>
+                                    <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Take a photo of your item and we'll tell you exactly how to dispose of it!</p>
+                                    <button class="btn" style="width: 100%;">Take Photo for Help</button>
+                                </div>
+                                
+                                <div style="background: #f3e5f5; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">🎓 UK Disposal Guide</h4>
+                                    <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Learn UK waste rules designed for international students</p>
+                                    <button class="btn btn-secondary" style="width: 100%;">Open Learning Hub</button>
+                                </div>
+                                
+                                <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">💬 Ask Community</h4>
+                                    <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Get help from other international students</p>
+                                    <button class="btn btn-secondary" style="width: 100%;">Community Forum</button>
+                                </div>
+                                
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">🏆 Practice Mode</h4>
+                                    <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Practice sorting without pressure - earn bonus points!</p>
+                                    <button class="btn" style="width: 100%;">Start Practice</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="mockup-header">
+                                <span>🔍 Item Recognition</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="mockup-content">
+                                <h3 style="margin-bottom: 20px;">Smart Item Analysis</h3>
+                                
+                                <div style="width: 100%; height: 120px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                                    📱 Plastic Water Bottle
+                                </div>
+                                
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="color: #2e7d32; margin-bottom: 10px;">✅ Item Identified!</h4>
+                                    <div style="font-weight: bold; margin-bottom: 5px;">Plastic Water Bottle (PET #1)</div>
+                                    <div style="font-size: 14px; color: #666;">Recyclable plastic bottle</div>
+                                </div>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <h4 style="margin-bottom: 10px;">📋 Disposal Instructions:</h4>
+                                    <ol style="font-size: 14px; color: #666; margin-left: 20px;">
+                                        <li>Remove the cap (keep it on)</li>
+                                        <li>Give it a quick rinse</li>
+                                        <li>Place in ♻️ Recycling bin</li>
+                                        <li>Earn 10 points!</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                    <strong style="color: #f57c00;">💡 UK Tip:</strong><br>
+                                    <span style="font-size: 14px; color: #666;">In the UK, you can leave bottle caps ON when recycling!</span>
+                                </div>
+                                
+                                <button class="btn" style="width: 100%;">Find Nearest Recycling Bin</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-highlight">
+                    <h3>🎯 Addressing Research Findings</h3>
+                    <p><strong>"Students dispose correctly if they have the right support"</strong></p>
+                    <p>✅ Instant guidance through photo recognition</p>
+                    <p>✅ Cultural adaptation for international students</p>
+                    <p>✅ Practice mode to build confidence</p>
+                    <p>✅ Community support from peers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('hidden'));
+            
+            // Remove active class from all nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+        }
+        
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = Math.random() * 80 + 20; // Random width between 20-100%
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
