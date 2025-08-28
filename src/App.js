@@ -19,6 +19,10 @@ function App() {
     setCurrentUser(null);
   };
 
+  console.log('App currentUser state:', currentUser); 
+  console.log('App isLoggedIn state:', isLoggedIn); 
+
+
   return (
     <div className="min-h-screen bg-gray-50 max-w-md mx-auto">
       {!isLoggedIn ? (
@@ -45,40 +49,342 @@ const LoginScreen = ({ onLogin }) => {
       return JSON.parse(savedUsers);
     }
     
-    // Default demo users (already verified)
-    return [
-      { 
-        id: '1', 
-        email: 'emma.chen@greenwich.ac.uk',
-        password: 'demo123',
-        name: 'Emma Chen', 
-        university: 'University of Greenwich', 
-        points: 1250, 
-        badges: ['🌱', '♻️', '🏆'],
-        country: 'China',
-        course: 'MSc Sustainable Engineering',
-        year: 'Year 2',
-        accommodation: 'Daniel Defoe Building',
-        isVerified: true,
-        registeredAt: new Date().toISOString()
-      },
-      { 
-        id: '2', 
-        email: 'ahmed.hassan@greenwich.ac.uk',
-        password: 'demo123',
-        name: 'Ahmed Hassan', 
-        university: 'University of Greenwich', 
-        points: 890, 
-        badges: ['🌱', '♻️'],
-        country: 'Egypt',
-        course: 'BSc Business Management',
-        year: 'Year 3',
-        accommodation: 'Blackheath Halls',
-        isVerified: true,
-        registeredAt: new Date().toISOString()
-      }
-    ];
-  });
+  // Default demo users (already verified)
+  return [
+{ 
+  id: '1', 
+  email: 'emma.chen@greenwich.ac.uk',
+  password: 'demo123',
+  name: 'Emma Chen', 
+  university: 'University of Greenwich', 
+  points: 1250, 
+  badges: ['🌱', '♻️', '🏆'],
+  country: 'China',
+  course: 'MSc Sustainable Engineering',
+  year: 'Year 2',
+  accommodation: 'Daniel Defoe Building',
+  isVerified: true,
+  registeredAt: new Date().toISOString()
+},
+{ 
+  id: '2', 
+  email: 'merinda.owusu@greenwich.ac.uk',
+  password: 'demo1234',
+  name: 'Merinda Owusu', 
+  university: 'University of Greenwich', 
+  points: 65, 
+  badges: ['🌱', '♻️'],
+  country: 'Ghana',
+  course: 'MSc Business Management',
+  year: 'Year 3',
+  accommodation: 'Blackheath Halls',
+  isVerified: true,
+  registeredAt: new Date().toISOString()
+},
+  
+  {
+    id: '3',
+    email: 'lesley.sally@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Lesley Sally',
+    university: 'University of Greenwich',
+    points: 95,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '4',
+    email: 'francis.yeboah@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Francis Yeboah',
+    university: 'University of Greenwich',
+    points: 140,
+    badges: [],
+    country: 'Ghana',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '5',
+    email: 'karen.davis@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Karen Davis',
+    university: 'University of Greenwich',
+    points: 125,
+    badges: [],
+    country: 'TBD',
+    course: 'PhD in Sustainability',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '6',
+    email: 'francisca.Nantwi@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Francisca Nantwi',
+    university: 'University of Greenwich',
+    points: 125,
+    badges: [],
+    country: 'TBD',
+    course: 'Postgraduate',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '7',
+    email: 'sharon.jackson@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Sharon Jackson',
+    university: 'University of Greenwich',
+    points: 150,
+    badges: [],
+    country: 'India',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '8',
+    email: 'hillary.jackson@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Hillary Jackson',
+    university: 'University of Greenwich',
+    points: 130,
+    badges: [],
+    country: 'Ireland',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '9',
+    email: 'adolf.golden@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Adolf Golden',
+    university: 'University of Greenwich',
+    points: 120,
+    badges: [],
+    country: 'Nigeria',
+    course: 'Business Administration',
+    year: '2',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '10',
+    email: 'barbara.jones@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Barbara Jones',
+    university: 'University of Greenwich',
+    points: 130,
+    badges: [],
+    country: 'Spain',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '11',
+    email: 'blessing.fames@greenwich.ac.uk',
+    email: 'participant9@testing.com',
+    password: 'test123',
+    name: 'Blessing Fames',
+    university: 'University of Greenwich',
+    points: 130,
+    badges: [],
+    country: 'India',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '12',
+    email: 'giulia.lar@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Giulia Lar',
+    university: 'University of Greenwich',
+    points: 150,
+    badges: [],
+    country: 'Germany',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '13',
+    email: 'daniella.agyeman@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Daniella Agyeman',
+    university: 'University of Greenwich',
+    points: 75,
+    badges: [],
+    country: 'Congo',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '14',
+    email: 'tracy.agyeman@greenwich.ac.uk',
+    password: 'test123',
+    name: 'Tracy Agyeman',
+    university: 'University of Greenwich',
+    points: 100,
+    badges: [],
+    country: 'UK',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '15',
+    email: 'participant13@testing.com',
+    password: 'test123',
+    name: 'Test Participant 13',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '16',
+    email: 'participant14@testing.com',
+    password: 'test123',
+    name: 'Test Participant 14',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '17',
+    email: 'participant15@testing.com',
+    password: 'test123',
+    name: 'Test Participant 15',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '18',
+    email: 'participant16@testing.com',
+    password: 'test123',
+    name: 'Test Participant 16',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '19',
+    email: 'participant17@testing.com',
+    password: 'test123',
+    name: 'Test Participant 17',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '20',
+    email: 'participant18@testing.com',
+    password: 'test123',
+    name: 'Test Participant 18',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+    id: '21',
+    email: 'participant19@testing.com',
+    password: 'test123',
+    name: 'Test Participant 19',
+    university: 'University of Greenwich',
+    points: 0,
+    badges: [],
+    country: 'TBD',
+    course: 'Research Participant',
+    year: 'Testing',
+    accommodation: 'N/A',
+    isVerified: true,
+    registeredAt: new Date().toISOString()
+  },
+  {
+  id: '22',
+  email: 'participant20@testing.com',
+  password: 'test123',
+  name: 'Test Participant 20',
+  university: 'University of Greenwich',
+  points: 0,
+  badges: [],
+  country: 'TBD',
+  course: 'Research Participant',
+  year: 'Testing',
+  accommodation: 'N/A',
+  isVerified: true,
+  registeredAt: new Date().toISOString()
+} // NO comma after the last item
+]; // Close the array
+}); // Close the function
 
   // Pending verification users (not yet verified)
   const [pendingUsers, setPendingUsers] = useState(() => {
@@ -122,7 +428,7 @@ const LoginScreen = ({ onLogin }) => {
   ];
 
   const accommodations = [
-    'Daniel Defoe Building',
+    'Medway Campus Accommodation',
     'Blackheath Halls',
     'Greenwich Campus Accommodation',
     'Avery Hill Accommodation',
@@ -690,6 +996,8 @@ const LoginScreen = ({ onLogin }) => {
             <strong>Secure Registration:</strong> Email verification required for all new accounts
             <br />
             <strong>Research Impact:</strong> Based on 23 international student interviews
+            <br />
+            <strong>Designed by:</strong> Ebenezer Ahemor
           </p>
         </div>
       </div>
@@ -699,6 +1007,12 @@ const LoginScreen = ({ onLogin }) => {
 
 const Dashboard = ({ user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('home');
+  const [currentUser, setCurrentUser] = useState(user);
+
+    // DEBUGGING
+  console.log('Dashboard received user:', user);
+  console.log('Dashboard currentUser state:', currentUser);
+  console.log('Points in header should be:', currentUser?.points);
 
   const tabs = [
     { id: 'home', label: 'Home', icon: Home },
@@ -709,22 +1023,29 @@ const Dashboard = ({ user, onLogout }) => {
     { id: 'profile', label: 'Profile', icon: User },
   ];
 
+    const handleUpdatePoints = (newPoints) => {
+    setCurrentUser(prevUser => ({
+      ...prevUser,
+      points: prevUser.points + newPoints
+    }));
+  };
+
   const renderContent = () => {
   switch (activeTab) {
     case 'home':
-      return <HomeContent user={user} />;
+      return <HomeContent user={currentUser} />;
     case 'log':
-      return <WasteLogger user={user} />;
+      return <WasteLogger user={currentUser} />;
     case 'learn':
-      return <Education user={user} />;
+      return <Education user={currentUser} onUpdatePoints={handleUpdatePoints} />;
     case 'stats':
-      return <Analytics user={user} />;
+      return <Analytics user={currentUser} />;
     case 'leaderboard':
-      return <Leaderboard user={user} />;
+      return <Leaderboard user={currentUser} />;
     case 'profile':
-      return <Profile user={user} onLogout={onLogout} />;
+      return <Profile user={currentUser} onLogout={onLogout} />;
     default:
-      return <HomeContent user={user} />;
+      return <HomeContent user={currentUser} />;
   }
 };
 
@@ -738,9 +1059,10 @@ const Dashboard = ({ user, onLogout }) => {
               <h1 className="text-xl font-bold text-gray-800">WasteLess</h1>
               <p className="text-sm text-gray-600">Welcome, {user.name}</p>
             </div>
+
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <div className="text-lg font-bold text-primary">{user.points}</div>
+                <div className="text-lg font-bold text-primary">{currentUser.points}</div>
                 <div className="text-xs text-gray-500">points</div>
               </div>
               <button onClick={onLogout} className="p-2 text-gray-500 hover:text-gray-700">
@@ -776,7 +1098,6 @@ const Dashboard = ({ user, onLogout }) => {
     </div>
   );
 };
-
 
 
 const VerificationSteps = ({ activeStep = 0 }) => {
@@ -1755,7 +2076,7 @@ const Leaderboard = ({ user }) => {
 
       {/* Research Impact Section */}
       <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200">
-        <h3 className="font-semibold mb-4 text-gray-800">📊 Research Impact - IC-ETSI 2025</h3>
+        <h3 className="font-semibold mb-4 text-gray-800">📊 Research Impact</h3>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">68.1kg</div>
@@ -1870,228 +2191,557 @@ const Profile = ({ user, onLogout }) => {
 
 // Add this Educational component to your App.js file
 
-const Education = ({ user }) => {
-  const [activeCategory, setActiveCategory] = useState('overview');
+const Education = ({ user, onUpdatePoints }) => {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [gameMode, setGameMode] = useState(false);
+  const [currentGame, setCurrentGame] = useState(null);
+  const [gameScore, setGameScore] = useState(0);
+  const [gameLevel, setGameLevel] = useState(1);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [completedModules, setCompletedModules] = useState(new Set());
 
-  const categories = [
+  const tabs = [
     { id: 'overview', label: 'Overview', icon: '📚' },
     { id: 'recycling', label: 'Recycling', icon: '♻️' },
-    { id: 'compost', label: 'Compost', icon: '🥬' },
-    { id: 'ewaste', label: 'E-Waste', icon: '📱' },
-    { id: 'textiles', label: 'Textiles', icon: '👕' },
+    { id: 'interactive', label: 'Interactive', icon: '🎮' },
+    { id: 'cultural', label: 'Cultural', icon: '🌍' },
+    { id: 'quiz', label: 'Quiz', icon: '🧩' }
   ];
 
-  const educationalContent = {
-    overview: {
-      title: "UK Waste Disposal Guide",
-      content: [
-        {
-          icon: "🇬🇧",
-          title: "Welcome to UK Waste Management",
-          description: "The UK has specific waste disposal rules that might be different from your home country. This guide will help you navigate the system confidently!"
-        },
-        {
-          icon: "🎯",
-          title: "Why Proper Disposal Matters",
-          description: "Correct waste sorting helps the UK reach its 50% recycling target and reduces environmental impact. Every action counts!"
-        },
-        {
-          icon: "🏆",
-          title: "Earn Points While Learning",
-          description: "Use this knowledge in the app to earn points and badges. The more you learn, the more you contribute to campus sustainability!"
-        }
-      ]
-    },
-    recycling: {
-      title: "Recycling in the UK ♻️",
-      content: [
-        {
-          icon: "🗞️",
-          title: "Paper & Cardboard",
-          description: "Newspapers, magazines, cardboard boxes, office paper. Remove tape and staples. Flatten boxes to save space."
-        },
-        {
-          icon: "🥤",
-          title: "Plastic Bottles & Containers",
-          description: "Check for recycling symbols 1-7. Rinse containers clean. Keep lids on bottles. No plastic bags in recycling bins!"
-        },
-        {
-          icon: "🥫",
-          title: "Metal Cans & Foil",
-          description: "Food cans, drink cans, aluminum foil (clean). Rinse food residue. No need to remove labels completely."
-        },
-        {
-          icon: "🍾",
-          title: "Glass Bottles & Jars",
-          description: "Clear, green, and brown glass. Remove lids. Rinse clean. No broken glass or light bulbs."
-        }
-      ]
-    },
-    compost: {
-      title: "Composting & Food Waste 🥬",
-      content: [
-        {
-          icon: "🍎",
-          title: "Fruit & Vegetable Scraps",
-          description: "Apple cores, banana peels, vegetable peelings, salad leaves. All raw or cooked fruits and vegetables are fine."
-        },
-        {
-          icon: "🍞",
-          title: "Food Leftovers",
-          description: "Bread, rice, pasta, cereal. Include plate scrapings and out-of-date food. Remove packaging first."
-        },
-        {
-          icon: "☕",
-          title: "Tea Bags & Coffee Grounds",
-          description: "Used tea bags, coffee grounds, coffee filters. Great for compost and reduces landfill waste."
-        },
-        {
-          icon: "❌",
-          title: "What NOT to Compost",
-          description: "Meat, fish, dairy, oils, pet waste, diseased plants. These can attract pests or harm the composting process."
-        }
-      ]
-    },
-    ewaste: {
-      title: "Electronic Waste (E-Waste) 📱",
-      content: [
-        {
-          icon: "📱",
-          title: "Small Electronics",
-          description: "Phones, tablets, chargers, headphones, gaming devices. Many contain valuable metals that can be recovered."
-        },
-        {
-          icon: "💻",
-          title: "Computers & Laptops",
-          description: "Desktop computers, laptops, keyboards, mice. Delete personal data before disposal. University may have collection points."
-        },
-        {
-          icon: "🔋",
-          title: "Batteries",
-          description: "Phone batteries, laptop batteries, AA/AAA batteries. Never put in regular bins - they can be dangerous!"
-        },
-        {
-          icon: "🏪",
-          title: "Where to Take E-Waste",
-          description: "University collection points, local recycling centers, electronics stores. Many offer free collection services."
-        }
-      ]
-    },
-    textiles: {
-      title: "Textile & Clothing Waste 👕",
-      content: [
-        {
-          icon: "👔",
-          title: "Good Condition Clothes",
-          description: "Donate to charity shops, clothing banks, or university swap shops. Someone else can enjoy them!"
-        },
-        {
-          icon: "🧦",
-          title: "Worn Out Textiles",
-          description: "Old socks, underwear, torn clothing. Many areas have textile recycling bins for fabric recovery."
-        },
-        {
-          icon: "👟",
-          title: "Shoes & Accessories",
-          description: "Shoes, bags, belts. Many can be repaired or donated. Some brands offer take-back programs."
-        },
-        {
-          icon: "♻️",
-          title: "Textile Recycling Tips",
-          description: "Clean items before donating. Check for textile banks on campus. Consider clothing swaps with friends!"
-        }
-      ]
-    }
-  };
+  // Drag and Drop Game Component
+  const WasteSortingGame = ({ category, onComplete }) => {
+    const [draggedItem, setDraggedItem] = useState(null);
+    const [droppedItems, setDroppedItems] = useState({
+      recycling: [],
+      compost: [],
+      general: [],
+      ewaste: []
+    });
+    const [score, setScore] = useState(0);
+    const [feedback, setFeedback] = useState('');
 
-  const currentContent = educationalContent[activeCategory];
+    const wasteItems = [
+      { id: 1, name: 'Plastic Bottle', correct: 'recycling', icon: '🥤', points: 10 },
+      { id: 2, name: 'Apple Core', correct: 'compost', icon: '🍎', points: 10 },
+      { id: 3, name: 'Old Phone', correct: 'ewaste', icon: '📱', points: 15 },
+      { id: 4, name: 'Pizza Box', correct: 'general', icon: '📦', points: 5 },
+      { id: 5, name: 'Banana Peel', correct: 'compost', icon: '🍌', points: 10 },
+      { id: 6, name: 'Aluminum Can', correct: 'recycling', icon: '🥫', points: 10 },
+      { id: 7, name: 'Broken Glass', correct: 'general', icon: '🔴', points: 5 },
+      { id: 8, name: 'Coffee Grounds', correct: 'compost', icon: '☕', points: 10 }
+    ];
 
-  return (
-    <div className="p-4 space-y-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-xl p-6 text-white shadow-lg">
-        <h2 className="text-2xl font-bold mb-2 flex items-center">
-          📚 Learn UK Waste Disposal
-        </h2>
-        <p className="text-blue-100">Master UK waste systems and earn points while learning!</p>
-      </div>
+    const bins = [
+      { id: 'recycling', name: 'Recycling', icon: '♻️', color: 'bg-blue-100 border-blue-300' },
+      { id: 'compost', name: 'Compost', icon: '🥬', color: 'bg-green-100 border-green-300' },
+      { id: 'general', name: 'General', icon: '🗑️', color: 'bg-gray-100 border-gray-300' },
+      { id: 'ewaste', name: 'E-Waste', icon: '📱', color: 'bg-purple-100 border-purple-300' }
+    ];
 
-      {/* Category Tabs */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
-        <div className="flex overflow-x-auto space-x-2 pb-2">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeCategory === category.id
-                  ? 'bg-green-500 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <span className="mr-2">{category.icon}</span>
-              {category.label}
-            </button>
-          ))}
+    const handleDragStart = (e, item) => {
+      setDraggedItem(item);
+      e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleDragOver = (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    };
+
+    const handleDrop = (e, binId) => {
+      e.preventDefault();
+      if (!draggedItem) return;
+
+      const isCorrect = draggedItem.correct === binId;
+      const newScore = isCorrect ? score + draggedItem.points : Math.max(0, score - 5);
+      
+      setScore(newScore);
+      setDroppedItems(prev => ({
+        ...prev,
+        [binId]: [...prev[binId], { ...draggedItem, isCorrect }]
+      }));
+
+      if (isCorrect) {
+        setFeedback(`✅ Correct! +${draggedItem.points} points`);
+      } else {
+        setFeedback(`❌ Incorrect. ${draggedItem.name} belongs in ${bins.find(b => b.id === draggedItem.correct)?.name}`);
+      }
+
+      setTimeout(() => setFeedback(''), 2000);
+      setDraggedItem(null);
+
+      // Check if game is complete
+      const totalDropped = Object.values(droppedItems).flat().length + 1;
+      if (totalDropped >= wasteItems.length) {
+        setTimeout(() => onComplete(newScore), 1000);
+      }
+    };
+
+    const availableItems = wasteItems.filter(item => 
+      !Object.values(droppedItems).flat().some(dropped => dropped.id === item.id)
+    );
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl p-4 text-white">
+          <h3 className="text-xl font-bold mb-2">🎮 Waste Sorting Challenge</h3>
+          <div className="flex justify-between items-center">
+            <p className="text-green-100">Drag items to the correct bins!</p>
+            <div className="bg-white bg-opacity-20 rounded-lg px-3 py-1">
+              <span className="font-bold">Score: {score}</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Content Section */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">{currentContent.title}</h3>
-        
-        <div className="space-y-4">
-          {currentContent.content.map((item, index) => (
-            <div key={index} className="bg-gray-50 rounded-lg p-4 border-l-4 border-green-500">
-              <div className="flex items-start space-x-3">
-                <div className="text-2xl flex-shrink-0">{item.icon}</div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-800 mb-2">{item.title}</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+        {feedback && (
+          <div className={`p-3 rounded-lg text-center font-medium ${
+            feedback.includes('✅') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+          }`}>
+            {feedback}
+          </div>
+        )}
+
+        {/* Draggable Items */}
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h4 className="font-semibold mb-3 flex items-center">
+            <Target className="w-4 h-4 mr-2" />
+            Items to Sort
+          </h4>
+          <div className="grid grid-cols-2 gap-3">
+            {availableItems.map(item => (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, item)}
+                className="bg-gray-50 p-3 rounded-lg border-2 border-dashed border-gray-300 cursor-grab active:cursor-grabbing hover:bg-gray-100 transition-all transform hover:scale-105"
+              >
+                <div className="text-center">
+                  <div className="text-2xl mb-1">{item.icon}</div>
+                  <div className="text-sm font-medium">{item.name}</div>
+                  <div className="text-xs text-gray-500">{item.points} pts</div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Drop Bins */}
+        <div className="grid grid-cols-2 gap-4">
+          {bins.map(bin => (
+            <div
+              key={bin.id}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, bin.id)}
+              className={`${bin.color} p-4 rounded-xl border-2 border-dashed min-h-32 transition-all hover:scale-105`}
+            >
+              <div className="text-center mb-3">
+                <div className="text-3xl mb-1">{bin.icon}</div>
+                <div className="font-semibold text-sm">{bin.name}</div>
+              </div>
+              
+              <div className="space-y-2">
+                {droppedItems[bin.id].map((item, index) => (
+                  <div 
+                    key={index} 
+                    className={`p-2 rounded-lg text-xs text-center ${
+                      item.isCorrect ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                    }`}
+                  >
+                    {item.icon} {item.name} {item.isCorrect ? '✅' : '❌'}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
         </div>
       </div>
+    );
+  };
 
-      {/* Quick Tips */}
-      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
-        <h3 className="font-semibold mb-3 text-orange-800 flex items-center">
-          💡 Pro Tips for International Students
-        </h3>
-        <div className="grid grid-cols-1 gap-3 text-sm">
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">✓</span>
-            <span className="text-orange-700">Ask your accommodation office about local recycling schedules</span>
+  // Cultural Comparison Game
+  const CulturalComparisonGame = ({ onComplete }) => {
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [showComparison, setShowComparison] = useState(false);
+
+const countries = [
+   { id: 'ireland', name: 'Ireland', flag: '🇮🇪' },
+  { id: 'india', name: 'India', flag: '🇮🇳' },
+  { id: 'nigeria', name: 'Nigeria', flag: '🇳🇬' },
+  { id: 'ghana', name: 'Ghana', flag: '🇬🇭' },
+  { id: 'italy', name: 'Italy', flag: '🇮🇹' },
+  { id: 'congo', name: 'Congo', flag: '🇨🇩' },
+  { id: 'spain', name: 'Spain', flag: '🇪🇸' },
+  { id: 'uk', name: 'United Kingdom', flag: '🇬🇧' },
+  { id: 'usa', name: 'United States', flag: '🇺🇸' },
+  { id: 'other', name: 'Other Country', flag: '🌍' }
+];
+
+    const comparisons = {
+    china: {
+    practice: 'Mandatory waste sorting in major cities',
+    difference: 'UK has voluntary sorting with strong social pressure',
+    tip: 'UK recycling is less strict but equally important'
+  },
+  ireland: {
+    practice: 'Three-bin system with strict recycling rules',
+    difference: 'UK has similar systems but with more local variation',
+    tip: 'UK recycling practices are very similar to Ireland'
+  },
+  india: {
+    practice: 'Informal recycling sector with door-to-door collection',
+    difference: 'UK has formal council collection systems',
+    tip: 'Follow council schedules rather than informal collectors'
+  },
+  nigeria: {
+    practice: 'Informal waste collection with limited recycling infrastructure',
+    difference: 'UK has formal council collection with comprehensive recycling',
+    tip: 'Use council-provided bins and follow collection schedules'
+  },
+  ghana: {
+  practice: 'Community-based waste collection with strong recycling culture',
+  difference: 'UK has individual household collection with scheduled pickup',
+  tip: 'UK recycling is less community-focused but equally important'
+  }, 
+italy: {
+  practice: 'Strict waste separation with different colored bins',
+  difference: 'UK has similar system but less rigid enforcement',
+  tip: 'UK recycling follows similar principles but with more flexibility'
+  },
+  congo: {
+    practice: 'Limited formal waste management, mostly informal collectors',
+    difference: 'UK has structured waste management with regular collection',
+    tip: 'Follow UK council guidelines for proper waste disposal'
+  },
+  spain: {
+    practice: 'Container-based system with separate bins for different materials',
+    difference: 'UK uses household bins while Spain uses community containers',
+    tip: 'UK system is more convenient with doorstep collection'
+  },
+  uk: {
+  practice: 'Well-established council collection with comprehensive recycling systems',
+  difference: 'This is your current system - UK practices are the baseline',
+  tip: 'You\'re already familiar with UK recycling - help teach others!'
+},
+usa: {
+  practice: 'Varies by state/city with different recycling requirements',
+  difference: 'UK has more standardized national recycling guidelines',
+  tip: 'UK recycling is more consistent across different areas'
+},
+other: {
+  practice: 'Every country has unique waste management approaches',
+  difference: 'UK emphasizes household separation and council collection',
+  tip: 'Observe local UK practices and follow council guidelines'
+}
+};
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-4 text-white">
+          <h3 className="text-xl font-bold mb-2">🌍 Cultural Waste Practices</h3>
+          <p className="text-purple-100">Compare UK practices with your home country!</p>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 shadow-sm">
+          <h4 className="font-semibold mb-4">Select Your Home Country:</h4>
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {countries.map(country => (
+              <button
+                key={country.id}
+                onClick={() => {
+                  setSelectedCountry(country.id);
+                  setShowComparison(true);
+                }}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  selectedCountry === country.id
+                    ? 'border-purple-500 bg-purple-50'
+                    : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
+                }`}
+              >
+                <div className="text-2xl mb-2">{country.flag}</div>
+                <div className="font-medium">{country.name}</div>
+              </button>
+            ))}
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">✓</span>
-            <span className="text-orange-700">Download your local council's waste app for collection days</span>
+
+          {showComparison && comparisons[selectedCountry] && (
+            <div className="space-y-4">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <h5 className="font-semibold text-blue-800 mb-2">Your Country's Practice:</h5>
+                <p className="text-blue-700 text-sm">{comparisons[selectedCountry].practice}</p>
+              </div>
+              
+              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                <h5 className="font-semibold text-green-800 mb-2">UK Difference:</h5>
+                <p className="text-green-700 text-sm">{comparisons[selectedCountry].difference}</p>
+              </div>
+              
+              <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                <h5 className="font-semibold text-yellow-800 mb-2">💡 Adaptation Tip:</h5>
+                <p className="text-yellow-700 text-sm">{comparisons[selectedCountry].tip}</p>
+              </div>
+
+              <button
+                onClick={() => onComplete(50)}
+                className="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition-all"
+              >
+                Complete Cultural Learning (+50 points)
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+
+  // Story-based Learning Module
+  const StoryLearningModule = ({ onComplete }) => {
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-4 text-white">
+          <h3 className="text-xl font-bold mb-2">📖 Interactive Story</h3>
+          <p className="text-indigo-100">Make choices that shape your sustainability journey!</p>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="text-center mb-6">
+            <div className="text-6xl mb-4">🏛️</div>
+            <h4 className="text-lg font-semibold">The Greenwich Guardian</h4>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">✓</span>
-            <span className="text-orange-700">When in doubt, check with British flatmates or friends</span>
+
+          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+            <p className="text-gray-700 leading-relaxed">
+              You're walking across Greenwich's UNESCO World Heritage campus when you notice a fellow international student struggling with waste bins. They look confused and are holding a mixed bag of recyclables and general waste.
+            </p>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">✓</span>
-            <span className="text-orange-700">Use the WasteLess app to practice and earn points!</span>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => onComplete(25)}
+              className="w-full bg-indigo-500 text-white py-3 rounded-lg font-semibold hover:bg-indigo-600 transition-all text-left px-4"
+            >
+              💡 "Hi! I use the WasteLess app - it helped me learn UK recycling. Want me to show you?"
+            </button>
+            <button
+              onClick={() => onComplete(15)}
+              className="w-full bg-gray-500 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition-all text-left px-4"
+            >
+              🚶 "Sorry, I'm in a hurry" (Walk past)
+            </button>
           </div>
         </div>
       </div>
+    );
+  };
 
-      {/* Action Button */}
-      <div className="bg-green-500 rounded-xl p-6 text-white text-center">
-        <h3 className="font-bold mb-2">Ready to Put Your Knowledge to Practice?</h3>
-        <p className="text-green-100 text-sm mb-4">
-          Use what you've learned to log waste correctly and earn points!
-        </p>
-        <div className="text-2xl mb-2">🏆</div>
-        <p className="text-green-100 text-xs">
-          Every correct disposal helps reach our 20% improvement goal!
-        </p>
+ const handleGameComplete = (points) => {
+  console.log('Game completed with points:', points);
+  console.log('onUpdatePoints function available:', !!onUpdatePoints);
+  
+  setGameScore(points);
+  setShowSuccess(true);
+  setGameMode(false);
+  
+  if (onUpdatePoints) {
+    console.log('Calling onUpdatePoints with:', points);
+    onUpdatePoints(points);
+  } else {
+    console.log('ERROR: onUpdatePoints function not available');
+  }
+  
+  setTimeout(() => setShowSuccess(false), 3000);
+};
+
+  const renderContent = () => {
+    if (gameMode && currentGame) {
+      switch (currentGame) {
+        case 'sorting':
+          return <WasteSortingGame onComplete={handleGameComplete} />;
+        case 'cultural':
+          return <CulturalComparisonGame onComplete={handleGameComplete} />;
+        case 'story':
+          return <StoryLearningModule onComplete={handleGameComplete} />;
+        default:
+          return null;
+      }
+    }
+
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-xl p-6 text-white shadow-lg">
+              <h2 className="text-2xl font-bold mb-2">🎓 Welcome to UK Waste Learning</h2>
+              <p className="text-blue-100">Interactive education designed for international students</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-green-500">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Globe className="w-6 h-6 text-green-500" />
+                  <h3 className="font-semibold">Cultural Adaptation</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Learn how UK waste practices differ from your home country</p>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-blue-500">
+                <div className="flex items-center space-x-3 mb-3">
+                  <BookOpen className="w-6 h-6 text-blue-500" />
+                  <h3 className="font-semibold">Interactive Learning</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Hands-on games and activities to practice waste sorting</p>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-purple-500">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Users className="w-6 h-6 text-purple-500" />
+                  <h3 className="font-semibold">Story-Based Learning</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Real campus scenarios to build confidence</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'interactive':
+        return (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl p-6 text-white">
+              <h2 className="text-2xl font-bold mb-2">🎮 Interactive Learning Games</h2>
+              <p className="text-green-100">Practice waste sorting with drag-and-drop games!</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              <button
+                onClick={() => { setGameMode(true); setCurrentGame('sorting'); }}
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all text-left border-2 border-gray-200 hover:border-green-500"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-3xl">🎯</div>
+                    <div>
+                      <h3 className="font-semibold text-lg">Waste Sorting Challenge</h3>
+                      <p className="text-gray-600 text-sm">Drag items to correct bins and earn points</p>
+                    </div>
+                  </div>
+                  <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                    Play Now
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setGameMode(true); setCurrentGame('cultural'); }}
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all text-left border-2 border-gray-200 hover:border-purple-500"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-3xl">🌍</div>
+                    <div>
+                      <h3 className="font-semibold text-lg">Cultural Comparison</h3>
+                      <p className="text-gray-600 text-sm">Compare UK practices with your home country</p>
+                    </div>
+                  </div>
+                  <div className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                    Explore
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setGameMode(true); setCurrentGame('story'); }}
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all text-left border-2 border-gray-200 hover:border-indigo-500"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-3xl">📖</div>
+                    <div>
+                      <h3 className="font-semibold text-lg">Greenwich Guardian Story</h3>
+                      <p className="text-gray-600 text-sm">Interactive campus-based scenarios</p>
+                    </div>
+                  </div>
+                  <div className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
+                    Start Story
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="text-center py-12">
+            <div className="text-4xl mb-4">🚧</div>
+            <h3 className="text-lg font-semibold mb-2">More Content Coming Soon!</h3>
+            <p className="text-gray-600">Additional educational modules will be available here.</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="p-4 space-y-6 relative">
+      {/* Success Animation */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl animate-bounce">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-2xl font-bold text-green-600 mb-2">Module Complete!</h2>
+            <p className="text-lg mb-4">You earned {gameScore} points!</p>
+            <div className="bg-green-100 rounded-lg p-4">
+              <p className="text-green-800">Keep learning to become a waste disposal expert!</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl p-6 text-white shadow-lg">
+        <h1 className="text-2xl font-bold mb-2">📚 Learn & Play</h1>
+        <p className="text-green-100">Interactive waste disposal education for international students</p>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="flex overflow-x-auto space-x-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => { setActiveTab(tab.id); setGameMode(false); }}
+              className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === tab.id
+                  ? 'bg-green-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <span className="mr-2">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      {renderContent()}
+
+      {/* Progress Tracking */}
+      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
+        <h3 className="font-semibold mb-3 text-orange-800">📊 Your Learning Progress</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">{completedModules.size}</div>
+            <div className="text-xs text-gray-600">Modules Completed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">{gameScore}</div>
+            <div className="text-xs text-gray-600">Points This Session</div>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
+
 export default App;
+

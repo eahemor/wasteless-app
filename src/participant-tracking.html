@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WasteLess App - Participant Tracking Spreadsheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c5530;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2c5530;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-bottom: 20px;
+           min-width: 1000px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 4px;
+            text-align: left;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #2c5530;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        
+        /* Fix recruitment source column width */
+        th:nth-child(11), td:nth-child(11) { 
+            width: 90px; 
+            min-width: 90px;
+        }
+        
+        th:nth-child(12), td:nth-child(12) { 
+            width: 200px; 
+            min-width: 200px;
+ }
+        /* Allow notes to wrap */
+        td:nth-child(12) {
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 200px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status-scheduled {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .status-interested {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .summary-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .summary-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5530;
+        }
+        .summary-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .download-btn {
+            background-color: #2c5530;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .download-btn:hover {
+            background-color: #1a3319;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎓 WasteLess App - Participant Tracking</h1>
+        <p class="subtitle">Dissertation Research - University of Greenwich</p>
+        
+        <div class="instructions">
+            <strong>📋 Instructions:</strong>
+            <ul>
+                <li>Use unique Participant IDs (P-001, P-002, etc.) to maintain anonymity</li>
+                <li>Update Status as participants progress through recruitment and testing</li>
+                <li>Record session details immediately after each session</li>
+                <li>Use Notes column for important observations or follow-up actions</li>
+                <li>Track both individual sessions and focus groups</li>
+            </ul>
+        </div>
+
+        <div class="btn-container">
+            <button class="download-btn" onclick="downloadCSV()">📥 Download as CSV</button>
+            <button class="download-btn" onclick="downloadExcel()">📊 Download as Excel</button>
+        </div>
+
+        <div class="table-container">
+            <table id="participantTable">
+                <thead>
+                    <tr>
+                        <th>Participant ID</th>
+                        <th>Contact Name</th>
+                        <th>Email</th>
+                        <th>Home Country</th>
+                        <th>Study Level</th>
+                        <th>Year(s)</th>
+                        <th>Session Type</th>
+                        <th>Date Scheduled</th>
+                        <th>Time Scheduled</th>
+                        <th>Status</th>
+                        <th>Recruitment Source></th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Completed and scheduled participants -->
+                    <tr>
+                        <td>P-001</td>
+                        <td>Merinda Owusu</td>
+                        <td>merinda.o@gre.ac.uk</td>
+                        <td>Ghana</td>
+                        <td>Postgraduate</td>
+                        <td>1 Year</td>
+                        <td>Individual</td>
+                        <td>15/07/2025</td>
+                        <td>6:20 PM</td>
+                        <td><span class="status-completed">Completed</span></td>
+                        <td>MSc Group</td>
+                        <td>Pilot testing - scored 65 points</td>
+                    </tr>
+                    <tr>
+                        <td>P-002</td>
+                        <td>Lesley Sally</td>
+                        <td>participant1@testing.com</td>
+                        <td>UK</td>
+                        <td>Undergraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>17/07/2025</td>
+                        <td>Pilot testing - scored 95 points</td>
+                    </tr>
+                    <tr>
+                        <td>P-003</td>
+                        <td>Francis Yeboah</td>
+                        <td>francis.nana@greenwich.ac.uk</td>
+                        <td>Ghana</td>
+                        <td>Undergraduate</td>
+                        <td>3 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>12:00 PM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>MSc Group</td>
+                        <td>17/07/2025</td>
+                        <td>Pilot testing - scored 140 points</td>
+                    </tr>
+                    <tr>
+                        <td>P-004</td>
+                        <td>Karen Davis</td>
+                        <td>karen.davis@greenwich.ac.uk</td>
+                        <td>Italy</td>
+                        <td>Postgraduate</td>
+                        <td>1 Year</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>5:00 PM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>17/07/2025</td>
+                        <td>Pilot testing - scored 125 points</td>
+                    </tr>
+                    <tr>
+                        <td>P-005</td>
+                        <td>Francisca Nantwi</td>
+                        <td>francisca.nantwi@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>4:00 PM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>17/07/2025</td>
+                        <td>Pilot testing - scored 125 points</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-006</td>
+                        <td>Sharon Jackson</td>
+                        <td>sharon.jackson@greenwich.ac.uk</td>
+                        <td>India</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>17/07/2025</td>
+                        <td>Pilot testing - scored 150 points</td>
+                    </tr>
+
+                      <tr>
+                        <td>P-007</td>
+                        <td>Hillary Jackson</td>
+                        <td>hillary.jackson@greenwich.ac.uk</td>
+                        <td>Ireland</td>
+                        <td>Postgraduate</td>
+                        <td>1 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>Pilot testing - scored 130 points</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-008</td>
+                        <td>Adolf Golden</td>
+                        <td>adolf.golden@greenwich.ac.uk</td>
+                        <td>Nigeria</td>
+                        <td>Undergraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>21/07/2025</td>
+                        <td>12:00 PM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                       <td>Pilot testing - scored 120 points</td>
+                    </tr>
+
+                    <tr>
+                        <td><P-009>
+                        <td>Barbara Jones</td>
+                        <td>barbara.jones@greenwich.ac.uk</td>
+                        <td>Spain</td>
+                        <td>Masters</td>
+                        <td>1 Years</td>
+                        <td>Individual</td>
+                        <td>21/07/2025</td>
+                        <td>10:00 AM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>WhatsApp</td>
+                        <td>Pilot testing - scored 130 points</td>
+                    </tr>
+
+                    <tr>
+                        <td><P-010>
+                        <td>Blessing Fames</td>
+                        <td>blessing.fames@greenwich.ac.uk</td>
+                        <td>USA</td>
+                        <td>Undergraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>22/07/2025</td>
+                        <td>12:00 PM</td>
+                        <td><span class="status-scheduled">Completed</span></td>
+                        <td>Email</td>
+                        <td>Pilot testing - scored 130 points</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-011</td>
+                        <td>Giulia Lar</td>
+                        <td>giulia.lar@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>3 Years</td>
+                        <td>Individual</td>
+                        <td>19/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-completed">Completed</span></td>
+                        <td>Email</td>
+                          <td>Pilot testing - scored 150 points</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-007</td>
+                        <td>Hillary Jackson</td>
+                        <td>hillary.jackson@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Scheduled</span></td>
+                        <td>WhatsApp</td>
+                        <td>18/07/2025</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-007</td>
+                        <td>Hillary Jackson</td>
+                        <td>hillary.jackson@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Scheduled</span></td>
+                        <td>WhatsApp</td>
+                        <td>18/07/2025</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-007</td>
+                        <td>Hillary Jackson</td>
+                        <td>hillary.jackson@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Scheduled</span></td>
+                        <td>WhatsApp</td>
+                        <td>18/07/2025</td>
+                    </tr>
+
+                    <tr>
+                        <td>P-007</td>
+                        <td>Hillary Jackson</td>
+                        <td>hillary.jackson@greenwich.ac.uk</td>
+                        <td>Germany</td>
+                        <td>Postgraduate</td>
+                        <td>2 Years</td>
+                        <td>Individual</td>
+                        <td>17/07/2025</td>
+                        <td>11:00 AM</td>
+                        <td><span class="status-scheduled">Scheduled</span></td>
+                        <td>WhatsApp</td>
+                        <td>18/07/2025</td>
+                    </tr>
+                    
+                    <!-- Additional participants P-006 to P-025 -->
+                    <tr><td>P-006</td><td></td><td>participant5@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-007</td><td></td><td>participant6@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-008</td><td></td><td>participant7@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-009</td><td></td><td>participant8@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-010</td><td></td><td>participant9@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-011</td><td></td><td>participant10@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-012</td><td></td><td>participant11@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-013</td><td></td><td>participant12@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-014</td><td></td><td>participant13@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-015</td><td></td><td>participant14@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-016</td><td></td><td>participant15@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-017</td><td></td><td>participant16@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-018</td><td></td><td>participant17@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-019</td><td></td><td>participant18@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-020</td><td></td><td>participant19@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-021</td><td></td><td>participant20@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-022</td><td></td><td>participant21@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-023</td><td></td><td>participant22@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-024</td><td></td><td>participant23@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>P-025</td><td></td><td>participant24@testing.com</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="summary-section">
+            <h3>📊 Recruitment Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-number" id="totalParticipants">5</div>
+                    <div class="summary-label">Total Recruited</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="completedSessions">1</div>
+                    <div class="summary-label">Completed Sessions</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="scheduledSessions">4</div>
+                    <div class="summary-label">Scheduled Sessions</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="interestedParticipants">0</div>
+                    <div class="summary-label">Interested/Pending</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="individualSessions">5</div>
+                    <div class="summary-label">Individual Sessions</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="focusGroups">0</div>
+                    <div class="summary-label">Focus Groups</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions" style="margin-top: 20px;">
+            <strong>🎯 Status Definitions:</strong>
+            <ul>
+                <li><span class="status-interested">Interested</span> - Initial contact made, awaiting scheduling</li>
+                <li><span class="status-scheduled">Scheduled</span> - Session confirmed with date/time</li>
+                <li><span class="status-completed">Completed</span> - Session finished, data collected</li>
+                <li><span class="status-cancelled">Cancelled</span> - Session cancelled, may reschedule</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function downloadCSV() {
+            let csv = 'Participant ID,Contact Name,Email,Home Country,Study Level,Years at Greenwich,Session Type,Date Scheduled,Time Scheduled,Status,Recruitment Source,Notes\n';
+            
+            const table = document.getElementById('participantTable');
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const row = [];
+                for (let j = 0; j < cells.length; j++) {
+                    let cellText = cells[j].textContent.trim();
+                    cellText = cellText.replace(/Scheduled|Completed|Interested|Cancelled/g, (match) => match);
+                    row.push('"' + cellText + '"');
+                }
+                csv += row.join(',') + '\n';
+            }
+            
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+            
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'WasteLess_Participant_Tracking.csv';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            window.URL.revokeObjectURL(url);
+            alert('CSV file downloaded successfully!');
+        }
+
+        function downloadExcel() {
+            const table = document.getElementById('participantTable');
+            const rows = table.getElementsByTagName('tr');
+            
+            let excelContent = `<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+<Worksheet ss:Name="Participant Tracking">
+<Table>`;
+
+            excelContent += '<Row>';
+            const headers = ['Participant ID', 'Contact Name', 'Email', 'Home Country', 'Study Level', 'Years at Greenwich', 'Session Type', 'Date Scheduled', 'Time Scheduled', 'Status', 'Recruitment Source', 'Notes'];
+            headers.forEach(header => {
+                excelContent += `<Cell><Data ss:Type="String">${header}</Data></Cell>`;
+            });
+            excelContent += '</Row>';
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                excelContent += '<Row>';
+                for (let j = 0; j < cells.length; j++) {
+                    let cellText = cells[j].textContent.trim();
+                    cellText = cellText.replace(/Scheduled|Completed|Interested|Cancelled/g, (match) => match);
+                    excelContent += `<Cell><Data ss:Type="String">${cellText}</Data></Cell>`;
+                }
+                excelContent += '</Row>';
+            }
+
+            excelContent += `</Table>
+</Worksheet>
+</Workbook>`;
+            
+            const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'WasteLess_Participant_Tracking.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
