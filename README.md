@@ -73,9 +73,9 @@ This application was developed as part of an MSc dissertation research project i
 - Progressive Web App implementation for accessibility
 
 # Author
-**Ebenezer Ahemor**
+**Ebenezer Ahemor** |
 MSc Student - University of Greenwich
-Dissertation: Product Development Project
+| Dissertation: Product Development Project
 
 ## License
 This project is developed for academic research purposes at the University of Greenwich.
