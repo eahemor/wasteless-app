@@ -74,7 +74,7 @@ This application was developed as part of an MSc dissertation research project i
 
 # Author
 **Ebenezer Ahemor** |
-MSc Student - University of Greenwich
+MSc Business Analytics Student - University of Greenwich
 | Dissertation: Product Development Project
 
 ## License
