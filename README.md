@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+# WasteLess App
+Gamified Sustainability Education Platform for International Students
+University of Greenwich - MSc Project Development Dissertation
+Project Overview
+WasteLess is a Progressive Web Application designed to help international students at the University of Greenwich navigate UK waste disposal systems through gamification and cultural adaptation. The application addresses the challenge of cultural differences in waste management practices by providing an engaging, educational platform.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Key Features
+•	Interactive Learning Games: Drag-and-drop waste sorting challenges with real-time feedback
+•	Cultural Adaptation: Comparison tools highlighting differences between UK and international waste practices
+•	Gamification Elements: Comprehensive badge system, leaderboards, and progress tracking
+•	International Student Focus: Multi-country support with tailored content for diverse backgrounds
+•	Progressive Web App: Cross-device compatibility and offline functionality
 
-## Available Scripts
+# Research Impact
+Based on user testing with 28 participants from 18 countries:
+•	9.32/10 average usability rating
+•	89% daily challenge completion rate
+•	34% increase in user engagement
+•	75% improvement in recycling rate awareness
+•	100% cultural adaptation success rate
 
-In the project directory, you can run:
+# Technology Stack
+•	Frontend: React.js, Progressive Web App
+•	Styling: CSS3, Responsive Design
+•	State Management: React Hooks
+•	Development: Create React App
+•	Version Control: Git, GitHub
+Installation & Setup
+Prerequisites
+•	Node.js (v14 or higher)
+•	npm or yarn
 
-### `npm start`
+Running the Application
+# Clone the repository
+git clone https://github.com/eahemor/wasteless-app.git
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Navigate to project directory
+cd wasteless-app
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Install dependencies
+npm install
+# Start development server
+npm start
+The application will open at http://localhost:3000
+Build for Production
+npm run build
+Project Structure
+src/
+├── components/          # React components
+├── images/             # Application screenshots and documentation
+│   ├── app-interface/  # Core UI screenshots
+│   ├── gamification-features/  # Game mechanics screenshots
+│   ├── research-validation/    # Research data visualizations
+│   └── extra-shots/    # Additional interface documentation
+└── mockups/            # Design mockups and user flow diagrams
 
-### `npm test`
+# Documentation
+•	Application Screenshots: Available in /src/images/ directory
+•	Research Data: Comprehensive user testing results and analytics
+•	Technical Documentation: Complete implementation details and user flows
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Academic Context
+This application was developed as part of an MSc dissertation research project investigating gamified approaches to sustainability education for international students. The research explores cultural adaptation strategies and engagement mechanisms in educational technology.
 
-### `npm run build`
+# Research Focus:
+•	Cross-cultural usability in educational applications
+•	Gamification effectiveness in behaviour change
+•	International student adaptation to UK systems
+•	Progressive Web App implementation for accessibility
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Author
+Ebenezer Ahemor
+MSc Student - University of Greenwich
+Dissertation: Product Development Project
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# License
+This project is developed for academic research purposes at the University of Greenwich.
+________________________________________
+For additional screenshots and extended documentation, see: Application Screenshots
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
