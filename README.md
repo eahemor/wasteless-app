@@ -80,5 +80,5 @@ Dissertation: Product Development Project
 ## License
 This project is developed for academic research purposes at the University of Greenwich.
 ________________________________________
-*For additional screenshots and extended documentation, see: **[Application Screenshots]**(https://github.com/eahemor/wasteless-app/blob/main/src/images/extra-shots)*
+*For additional screenshots and extended documentation, see: [Application Screenshots](https://github.com/eahemor/wasteless-app/blob/main/src/images/extra-shots)*
 
